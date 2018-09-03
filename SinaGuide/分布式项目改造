@@ -1,0 +1,19 @@
+1、修改配置文件信息，增加分布式项目该有的配置信息
+
+2、修改爬虫继承父类，继承Spider该换继承RedisSpider,继承CrawlSpider的改换继承RedisCrawlSpider
+
+3、设置动态域
+   def __init__(self, *args, **kwargs):
+       domain = kwargs.pop('domain', '')
+       self.allowed_domains = filter(None, domain.split(','))
+       super(爬虫类名, self).__init__(*args, **kwargs)
+
+4、设置redis-key启动命令
+   redis_key = "爬虫类名:start_urls"
+
+5、启动各个客户端爬虫
+   scrapy runspider 爬虫文件名称.py
+
+6、主机Master在redis-cli命令下设置初始URL任务到从机，爬虫开始
+   lpush redis_key 初始URL（都无需加引号）
+   lpush SinaguideSpider:start_urls http://news.sina.com.cn/guide/
